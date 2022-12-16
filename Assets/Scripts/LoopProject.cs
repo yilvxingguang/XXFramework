@@ -32,14 +32,10 @@ public class LoopProject : MonoBehaviour
 
         Application.targetFrameRate = 60;//目标帧速率
 
-
-
     }
     void Start()
     {
-        //if (!HaspLock.Instance.LoginHasp(3)) return;
-        //Addressables.LoadAssetAsync<GameObject>("Cube").Completed += LoopProject_Completed; ;
-        //if (!HaspLock.Instance.LoginHasp()) return;
+        
         SceneStateController.Instance.SetState(new StartSceneState(), false);
         LastInterval = Time.realtimeSinceStartup;//游戏开始后的实时秒数
     }

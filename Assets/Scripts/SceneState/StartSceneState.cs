@@ -9,7 +9,7 @@ using OfficeOpenXml;
 public class StartSceneState : ISceneState
 {
     private bool isRun = true;
-    public StartSceneState() : base("StartScene")
+    public StartSceneState() : base("00")
     {
     }
     public override void StateStart()
