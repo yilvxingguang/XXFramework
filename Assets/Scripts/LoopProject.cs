@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
+
 
 public class LoopProject : MonoBehaviour
 {
@@ -44,18 +43,6 @@ public class LoopProject : MonoBehaviour
         SceneStateController.Instance.SetState(new StartSceneState(), false);
         LastInterval = Time.realtimeSinceStartup;//游戏开始后的实时秒数
     }
-
-    private void LoopProject_Completed(AsyncOperationHandle<GameObject> obj)
-    {
-
-        if (obj.Status == AsyncOperationStatus.Failed) return;
-
-        SceneStateController.Instance.SetState(new StartSceneState(), false);
-        //   SceneStateController.Instance.SetState(new MainSceneState(), false);
-        //  SceneStateController.Instance.SetState(new DrillSceneState("FlowerBasin"),false);
-        LastInterval = Time.realtimeSinceStartup;//游戏开始后的实时秒数
-    }
-
 
     // Update is called once per frame
     void Update()
