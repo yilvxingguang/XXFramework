@@ -1,16 +1,16 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public class PostWrapper
 {
-	// ·Ö·¢Ö¡
+	// åˆ†å‘å¸§
 	public int PostFrame;
-	// ÏûÏ¢ID£¬Ò»¸ö hashCode
+	// æ¶ˆæ¯IDï¼Œä¸€ä¸ª hashCode
 	public int EventID;
-	// ÏûÏ¢ÄÚÈİ£¬IEventMessage ÊÇÏûÏ¢³éÏó½Ó¿Ú
+	// æ¶ˆæ¯å†…å®¹ï¼ŒIEventMessage æ˜¯æ¶ˆæ¯æŠ½è±¡æ¥å£
 	public IEventMessage Message;
-	// ÊÍ·ÅÏûÏ¢£¬µÈ´ıÀ¬»ø»ØÊÕ
+	// é‡Šæ”¾æ¶ˆæ¯ï¼Œç­‰å¾…åƒåœ¾å›æ”¶
 	public void OnRelease()
 	{
 		PostFrame = 0;
@@ -24,7 +24,7 @@ public class EventManager
 	private static readonly Dictionary<int, List<Action<IEventMessage>>> _listeners = new Dictionary<int, List<Action<IEventMessage>>>(1000);
 	private static readonly List<PostWrapper> _postWrappers = new List<PostWrapper>(1000);
 	/// <summary>
-	/// Ìí¼Ó¼àÌı
+	/// æ·»åŠ ç›‘å¬
 	/// </summary>
 	public static void AddListener<TEvent>(System.Action<IEventMessage> listener) where TEvent : IEventMessage
 	{
@@ -32,7 +32,7 @@ public class EventManager
 	}
 
 	/// <summary>
-	/// Ìí¼Ó¼àÌı
+	/// æ·»åŠ ç›‘å¬
 	/// </summary>
 	public static void AddListener(System.Type eventType, System.Action<IEventMessage> listener)
 	{
@@ -41,7 +41,7 @@ public class EventManager
 	}
 
 	/// <summary>
-	/// Ìí¼Ó¼àÌı
+	/// æ·»åŠ ç›‘å¬
 	/// </summary>
 	public static void AddListener(int eventId, System.Action<IEventMessage> listener)
 	{
@@ -52,7 +52,7 @@ public class EventManager
 	}
 
 	/// <summary>
-	/// ÒÆ³ı¼àÌı
+	/// ç§»é™¤ç›‘å¬
 	/// </summary>
 	public static void RemoveListener(System.Type eventType, System.Action<IEventMessage> listener)
 	{
@@ -61,7 +61,7 @@ public class EventManager
 	}
 
 	/// <summary>
-	/// ÒÆ³ı¼àÌı
+	/// ç§»é™¤ç›‘å¬
 	/// </summary>
 	public static void RemoveListener(int eventId, System.Action<IEventMessage> listener)
 	{
@@ -72,7 +72,7 @@ public class EventManager
 		}
 	}
 	/// <summary>
-	/// ÊµÊ±¹ã²¥ÊÂ¼ş
+	/// å®æ—¶å¹¿æ’­äº‹ä»¶
 	/// </summary>
 	public static void SendMessage(IEventMessage message)
 	{
@@ -81,7 +81,7 @@ public class EventManager
 	}
 
 	/// <summary>
-	/// ÊµÊ±¹ã²¥ÊÂ¼ş
+	/// å®æ—¶å¹¿æ’­äº‹ä»¶
 	/// </summary>
 	public static void SendMessage(int eventId, IEventMessage message)
 	{
@@ -95,7 +95,7 @@ public class EventManager
 		}
 	}
 	/// <summary>
-	/// ÑÓ³Ù¹ã²¥ÊÂ¼ş
+	/// å»¶è¿Ÿå¹¿æ’­äº‹ä»¶
 	/// </summary>
 	public static void PostMessage(IEventMessage message)
 	{
@@ -104,7 +104,7 @@ public class EventManager
 	}
 
 	/// <summary>
-	/// ÑÓ³Ù¹ã²¥ÊÂ¼ş
+	/// å»¶è¿Ÿå¹¿æ’­äº‹ä»¶
 	/// </summary>
 	public static void PostMessage(int eventId, IEventMessage message)
 	{
@@ -115,7 +115,7 @@ public class EventManager
 		_postWrappers.Add(wrapper);
 	}
 	/// <summary>
-	/// Ã¿Ö¡±éÀúÑÓ³ÙÊı×é£¬Èç¹ûÊı×éÖĞÓĞÏûÏ¢ÇÒµ±Ç°Ö¡´óÓÚ·Ö·¢Ö¡ÔòÁ¢¼´·Ö·¢
+	/// æ¯å¸§éå†å»¶è¿Ÿæ•°ç»„ï¼Œå¦‚æœæ•°ç»„ä¸­æœ‰æ¶ˆæ¯ä¸”å½“å‰å¸§å¤§äºåˆ†å‘å¸§åˆ™ç«‹å³åˆ†å‘
 	/// </summary>
 	public static void Update()
 	{
@@ -130,7 +130,7 @@ public class EventManager
 		}
 	}
 	/// <summary>
-	/// Çå¿ÕËùÓĞ¼àÌı
+	/// æ¸…ç©ºæ‰€æœ‰ç›‘å¬
 	/// </summary>
 	public static void ClearListeners()
 	{
