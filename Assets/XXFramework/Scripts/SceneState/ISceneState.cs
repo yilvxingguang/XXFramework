@@ -22,7 +22,9 @@ public class ISceneState
     /// </summary>
     public virtual void StateStart() {
         //if (!HaspLock.Instance.LoginHasp()) return;
-        mCanvas = GameObject.Find("CanvasUI").transform; player = GameObject.Find("Player"); }
+        mCanvas = GameObject.Find("CanvasUI").transform; 
+        player = GameObject.Find("Player"); 
+    }
     /// <summary>
     /// 状态更新调用
     /// </summary>
