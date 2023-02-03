@@ -26,7 +26,7 @@ public class EventManager
 	/// <summary>
 	/// 添加监听
 	/// </summary>
-	public static void AddListener<TEvent>(System.Action<IEventMessage> listener) where TEvent : IEventMessage
+	public static void AddListener<TEvent>(Action<IEventMessage> listener) where TEvent : IEventMessage
 	{
 		AddListener(typeof(TEvent), listener);
 	}
@@ -34,7 +34,7 @@ public class EventManager
 	/// <summary>
 	/// 添加监听
 	/// </summary>
-	public static void AddListener(System.Type eventType, System.Action<IEventMessage> listener)
+	public static void AddListener(Type eventType, Action<IEventMessage> listener)
 	{
 		int eventId = eventType.GetHashCode();
 		AddListener(eventId, listener);
@@ -43,7 +43,7 @@ public class EventManager
 	/// <summary>
 	/// 添加监听
 	/// </summary>
-	public static void AddListener(int eventId, System.Action<IEventMessage> listener)
+	public static void AddListener(int eventId, Action<IEventMessage> listener)
 	{
 		if (_listeners.ContainsKey(eventId) == false)
 			_listeners.Add(eventId, new List<Action<IEventMessage>>());
@@ -109,7 +109,7 @@ public class EventManager
 	public static void PostMessage(int eventId, IEventMessage message)
 	{
 		var wrapper = new PostWrapper();
-		wrapper.PostFrame = UnityEngine.Time.frameCount;
+		wrapper.PostFrame = Time.frameCount;
 		wrapper.EventID = eventId;
 		wrapper.Message = message;
 		_postWrappers.Add(wrapper);
@@ -122,7 +122,7 @@ public class EventManager
 		for (int i = _postWrappers.Count - 1; i >= 0; i--)
 		{
 			var wrapper = _postWrappers[i];
-			if (UnityEngine.Time.frameCount > wrapper.PostFrame)
+			if (Time.frameCount > wrapper.PostFrame)
 			{
 				SendMessage(wrapper.EventID, wrapper.Message);
 				_postWrappers.RemoveAt(i);
