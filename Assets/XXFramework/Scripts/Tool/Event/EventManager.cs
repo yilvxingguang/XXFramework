@@ -114,6 +114,9 @@ public class EventManager
 		wrapper.Message = message;
 		_postWrappers.Add(wrapper);
 	}
+	/// <summary>
+	/// 每帧遍历延迟数组，如果数组中有消息且当前帧大于分发帧则立即分发
+	/// </summary>
 	public static void Update()
 	{
 		for (int i = _postWrappers.Count - 1; i >= 0; i--)
