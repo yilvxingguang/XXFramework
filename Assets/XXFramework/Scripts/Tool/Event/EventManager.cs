@@ -54,7 +54,7 @@ public class EventManager
 	/// <summary>
 	/// 移除监听
 	/// </summary>
-	public static void RemoveListener(System.Type eventType, System.Action<IEventMessage> listener)
+	public static void RemoveListener(Type eventType, Action<IEventMessage> listener)
 	{
 		int eventId = eventType.GetHashCode();
 		RemoveListener(eventId, listener);
@@ -63,7 +63,7 @@ public class EventManager
 	/// <summary>
 	/// 移除监听
 	/// </summary>
-	public static void RemoveListener(int eventId, System.Action<IEventMessage> listener)
+	public static void RemoveListener(int eventId, Action<IEventMessage> listener)
 	{
 		if (_listeners.ContainsKey(eventId))
 		{
