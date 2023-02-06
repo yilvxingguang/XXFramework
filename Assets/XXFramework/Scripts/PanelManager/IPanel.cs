@@ -61,7 +61,6 @@ public class IPanel
     /// <returns></returns>
     private GameObject CreateUI()
     {
-
         try
         {
             uiObject = Canvas.Find(UIName).gameObject;

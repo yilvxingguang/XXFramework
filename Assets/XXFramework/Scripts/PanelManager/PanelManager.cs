@@ -32,7 +32,6 @@ public class PanelManager
     public void Clear(IPanelManager panelmanager)
     {
         panelmanager.Clear();
-       
         CommonPanelManager.Clear();
         ToolPanelManager.Clear();
        
