@@ -2,22 +2,22 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+public enum LogColor
+{
+    green,
+    black,
+    blue,
+    cyan,
+    white,
+    yellow,
+    red,
+    gray
+}
 public class DebugLogController : UnitySingleton<DebugLogController>
 {
      public static bool enable = true;
 
-    public enum Color
-    {
-        green,
-        black,
-        blue,
-        cyan,
-        white,
-        yellow,
-        red,
-        gray
-    }
+    
    /// <summary>
    /// 普通输出
    /// </summary>
@@ -25,7 +25,7 @@ public class DebugLogController : UnitySingleton<DebugLogController>
    /// <param name="color"></param>
    /// <param name="bold"></param>
    /// <param name="italic"></param>
-    public static void Log(object message, Color color = Color.gray,bool bold = false,bool italic = false,bool timeStamp=true)
+    public static void Log(object message, LogColor color = LogColor.gray,bool bold = false,bool italic = false,bool timeStamp=true)
     {
         if (!enable)
         {
@@ -41,7 +41,7 @@ public class DebugLogController : UnitySingleton<DebugLogController>
     /// <param name="bold"></param>
     /// <param name="italic"></param>
     /// <typeparam name="T"></typeparam>
-    public static void LogObject<T>(T content, Color color = Color.black,bool bold = false,bool italic = false)
+    public static void LogObject<T>(T content, LogColor color = LogColor.black,bool bold = false,bool italic = false)
     {
         if (!enable)
         {
@@ -63,13 +63,13 @@ public class DebugLogController : UnitySingleton<DebugLogController>
             return;
         }
 
-        var result = Title(typeof(T).Name + " List", 0,Color.green) + "\n\n";
+        var result = Title(typeof(T).Name + " List", 0, LogColor.green) + "\n\n";
         for (int i = 0; i < content.Count; i++)
         {
-            result += Title(typeof(T).Name+"_" + i, 1, Color.green) + "\n";
+            result += Title(typeof(T).Name+"_" + i, 1, LogColor.green) + "\n";
             result += ObjectMessage<T>(content[i]) + "\n";
         }
-        result += Title("End", 0, Color.green);
+        result += Title("End", 0, LogColor.green);
 
         Debug.Log(result);
     }
@@ -86,13 +86,13 @@ public class DebugLogController : UnitySingleton<DebugLogController>
             return;
         }
 
-        var result = Title(typeof(T).Name + " List", 0, Color.green) + "\n";
+        var result = Title(typeof(T).Name + " List", 0, LogColor.green) + "\n";
         for (int i = 0; i < content.Length; i++)
         {
-            result += Title(typeof(T).Name + "_" + i, 1, Color.green) + "\n";
+            result += Title(typeof(T).Name + "_" + i, 1, LogColor.green) + "\n";
             result += ObjectMessage<T>(content[i]) + "\n";
         }
-        result += Title("End", 0, Color.green);
+        result += Title("End", 0, LogColor.green);
 
         Debug.Log(result);
     }
@@ -103,7 +103,7 @@ public class DebugLogController : UnitySingleton<DebugLogController>
     /// <param name="color"></param>
     /// <param name="bold"></param>
     /// <param name="italic"></param>
-    public static void Warning(object message, Color color = Color.yellow,bool bold = false,bool italic = false)
+    public static void Warning(object message, LogColor color = LogColor.yellow,bool bold = false,bool italic = false)
     {
         if (!enable)
         {
@@ -118,7 +118,7 @@ public class DebugLogController : UnitySingleton<DebugLogController>
     /// <param name="color"></param>
     /// <param name="bold"></param>
     /// <param name="italic"></param>
-    public static void Error(object message, Color color = Color.red,bool bold = false,bool italic = false)
+    public static void Error(object message, LogColor color = LogColor.red,bool bold = false,bool italic = false)
     {
         if (!enable)
         {
@@ -132,7 +132,7 @@ public class DebugLogController : UnitySingleton<DebugLogController>
         
     }
 
-    private static string Message(object message,Color color = Color.black,bool bold = false,bool italic = false,bool timeStamp=true)
+    private static string Message(object message, LogColor color = LogColor.black,bool bold = false,bool italic = false,bool timeStamp=true)
     {
         int time = (int)(Time.realtimeSinceStartup * 1000);
         var content = string.Format("<color={0}>{1}</color>",color.ToString(), message+"  Time:"+time/1000.0);
@@ -142,7 +142,7 @@ public class DebugLogController : UnitySingleton<DebugLogController>
         return content;
     }
 
-    private static string Title(object title, int level, Color color)
+    private static string Title(object title, int level, LogColor color)
     {
         return Message(string.Format("{0}{1}{2}{1}", Space(level * 2), Character(16 - level * 2), title), color);
     }
@@ -154,13 +154,13 @@ public class DebugLogController : UnitySingleton<DebugLogController>
         var fields = typeof(T).GetFields();
         for (int i = 0; i < fields.Length; i++)
         {
-            result += Space(4) + Message(fields[i].Name + " : ", Color.green, true) + fields[i].GetValue(content) + "\n";
+            result += Space(4) + Message(fields[i].Name + " : ", LogColor.green, true) + fields[i].GetValue(content) + "\n";
         }
 
         var properties = typeof(T).GetProperties();
         for (int i = 0; i < properties.Length; i++)
         {
-            result += Space(4) + Message(properties[i].Name + " : ", Color.green, true) + properties[i].GetValue(content, null) + "\n";
+            result += Space(4) + Message(properties[i].Name + " : ", LogColor.green, true) + properties[i].GetValue(content, null) + "\n";
         }
 
         return result;
