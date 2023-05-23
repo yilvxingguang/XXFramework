@@ -55,6 +55,12 @@ public class UnitySingleton<T> : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        Init();
+    }
+    //子类对成员进行初始化如果放在Awake里仍会出现Null问题所以自行制作一个init函数解决（可用可不用）
+    protected virtual void Init()
+    {
+
     }
 }
 
