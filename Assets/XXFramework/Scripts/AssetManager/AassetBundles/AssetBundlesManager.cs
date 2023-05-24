@@ -6,23 +6,23 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 
 /// <summary>
-/// AB°ü¹ÜÀíÆ÷ È«¾ÖÎ¨Ò» Ê¹ÓÃµ¥ÀıÄ£Ê½
+/// ABåŒ…ç®¡ç†å™¨ å…¨å±€å”¯ä¸€ ä½¿ç”¨å•ä¾‹æ¨¡å¼
 /// </summary>
 public class AssetBundlesManager : UnitySingleton<AssetBundlesManager>
     {
-        //AB°ü»º´æ---½â¾öAB°üÎŞ·¨ÖØ¸´¼ÓÔØµÄÎÊÌâ Ò²ÓĞÀûÓÚÌá¸ßĞ§ÂÊ¡£
+        //ABåŒ…ç¼“å­˜---è§£å†³ABåŒ…æ— æ³•é‡å¤åŠ è½½çš„é—®é¢˜ ä¹Ÿæœ‰åˆ©äºæé«˜æ•ˆç‡ã€‚
         private Dictionary<string, AssetBundle> abCache;
 
-        private AssetBundle mainAB = null; //Ö÷°ü
+        private AssetBundle mainAB = null; //ä¸»åŒ…
 
-        private AssetBundleManifest mainManifest = null; //Ö÷°üÖĞÅäÖÃÎÄ¼ş---ÓÃÒÔ»ñÈ¡ÒÀÀµ°ü
+        private AssetBundleManifest mainManifest = null; //ä¸»åŒ…ä¸­é…ç½®æ–‡ä»¶---ç”¨ä»¥è·å–ä¾èµ–åŒ…
 
-        //¸÷¸öÆ½Ì¨ÏÂµÄ»ù´¡Â·¾¶ --- ÀûÓÃºêÅĞ¶Ïµ±Ç°Æ½Ì¨ÏÂµÄstreamingAssetsÂ·¾¶
+        //å„ä¸ªå¹³å°ä¸‹çš„åŸºç¡€è·¯å¾„ --- åˆ©ç”¨å®åˆ¤æ–­å½“å‰å¹³å°ä¸‹çš„streamingAssetsè·¯å¾„
         private string basePath
         {
             get
             {
-                //Ê¹ÓÃStreamingAssetsÂ·¾¶×¢ÒâAB°ü´ò°üÊ± ¹´Ñ¡copy to streamingAssets
+                //ä½¿ç”¨StreamingAssetsè·¯å¾„æ³¨æ„ABåŒ…æ‰“åŒ…æ—¶ å‹¾é€‰copy to streamingAssets
 #if UNITY_EDITOR || UNITY_STANDALONE
                 return Application.dataPath + "/StreamingAssets/";
 #elif UNITY_IPHONE
@@ -32,7 +32,7 @@ public class AssetBundlesManager : UnitySingleton<AssetBundlesManager>
 #endif
             }
         }
-        //¸÷¸öÆ½Ì¨ÏÂµÄÖ÷°üÃû³Æ --- ÓÃÒÔ¼ÓÔØÖ÷°ü»ñÈ¡ÒÀÀµĞÅÏ¢
+        //å„ä¸ªå¹³å°ä¸‹çš„ä¸»åŒ…åç§° --- ç”¨ä»¥åŠ è½½ä¸»åŒ…è·å–ä¾èµ–ä¿¡æ¯
         private string mainABName
         {
             get
@@ -47,44 +47,44 @@ public class AssetBundlesManager : UnitySingleton<AssetBundlesManager>
             }
         }
 
-        //¼Ì³ĞÁËµ¥ÀıÄ£Ê½Ìá¹©µÄ³õÊ¼»¯º¯Êı
+        //ç»§æ‰¿äº†å•ä¾‹æ¨¡å¼æä¾›çš„åˆå§‹åŒ–å‡½æ•°
         protected override void Init()
         {
             base.Init();
-            //³õÊ¼»¯×Öµä
+            //åˆå§‹åŒ–å­—å…¸
             abCache = new Dictionary<string, AssetBundle>();
         }
 
 
-        //¼ÓÔØAB°ü
+        //åŠ è½½ABåŒ…
         private AssetBundle LoadABPackage(string abName)
         {
             AssetBundle ab;
-            //¼ÓÔØab°ü£¬ĞèÒ»²¢¼ÓÔØÆäÒÀÀµ°ü¡£
+            //åŠ è½½abåŒ…ï¼Œéœ€ä¸€å¹¶åŠ è½½å…¶ä¾èµ–åŒ…ã€‚
             if (mainAB == null)
             {
-                //¸ù¾İ¸÷¸öÆ½Ì¨ÏÂµÄ»ù´¡Â·¾¶ºÍÖ÷°üÃû¼ÓÔØÖ÷°ü
+                //æ ¹æ®å„ä¸ªå¹³å°ä¸‹çš„åŸºç¡€è·¯å¾„å’Œä¸»åŒ…ååŠ è½½ä¸»åŒ…
                 mainAB = AssetBundle.LoadFromFile(basePath + mainABName);
-                //»ñÈ¡Ö÷°üÏÂµÄAssetBundleManifest×ÊÔ´ÎÄ¼ş£¨´æÓĞÒÀÀµĞÅÏ¢£©
+                //è·å–ä¸»åŒ…ä¸‹çš„AssetBundleManifestèµ„æºæ–‡ä»¶ï¼ˆå­˜æœ‰ä¾èµ–ä¿¡æ¯ï¼‰
                 mainManifest = mainAB.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
             
             }
-            //¸ù¾İmanifest»ñÈ¡ËùÓĞÒÀÀµ°üµÄÃû³Æ ¹Ì¶¨API
+            //æ ¹æ®manifestè·å–æ‰€æœ‰ä¾èµ–åŒ…çš„åç§° å›ºå®šAPI
             string[] dependencies = mainManifest.GetAllDependencies(abName);
-            //Ñ­»·¼ÓÔØËùÓĞÒÀÀµ°ü
+            //å¾ªç¯åŠ è½½æ‰€æœ‰ä¾èµ–åŒ…
             for (int i = 0; i < dependencies.Length; i++)
             {
-                //Èç¹û²»ÔÚ»º´æÔò¼ÓÈë
+                //å¦‚æœä¸åœ¨ç¼“å­˜åˆ™åŠ å…¥
                 if (!abCache.ContainsKey(dependencies[i]))
                 {
-                    //¸ù¾İÒÀÀµ°üÃû³Æ½øĞĞ¼ÓÔØ
+                    //æ ¹æ®ä¾èµ–åŒ…åç§°è¿›è¡ŒåŠ è½½
                     ab = AssetBundle.LoadFromFile(basePath + dependencies[i]);
-                    //×¢ÒâÌí¼Ó½ø»º´æ ·ÀÖ¹ÖØ¸´¼ÓÔØAB°ü
+                    //æ³¨æ„æ·»åŠ è¿›ç¼“å­˜ é˜²æ­¢é‡å¤åŠ è½½ABåŒ…
                     abCache.Add(dependencies[i], ab);
                 }
             }
         Debug.Log(dependencies.Length);
-        //¼ÓÔØÄ¿±ê°ü -- Í¬Àí×¢Òâ»º´æÎÊÌâ
+        //åŠ è½½ç›®æ ‡åŒ… -- åŒç†æ³¨æ„ç¼“å­˜é—®é¢˜
         if (abCache.ContainsKey(abName)) return abCache[abName];
             else
             {
@@ -97,60 +97,60 @@ public class AssetBundlesManager : UnitySingleton<AssetBundlesManager>
         }
 
 
-        //==================ÈıÖÖ×ÊÔ´Í¬²½¼ÓÔØ·½Ê½==================
-        //Ìá¹©¶àÖÖµ÷ÓÃ·½Ê½ ±ãÓÚÆäËüÓïÑÔµÄµ÷ÓÃ£¨Lua¶Ô·ºĞÍÖ§³Ö²»ºÃ£©
-        #region Í¬²½¼ÓÔØµÄÈı¸öÖØÔØ
+        //==================ä¸‰ç§èµ„æºåŒæ­¥åŠ è½½æ–¹å¼==================
+        //æä¾›å¤šç§è°ƒç”¨æ–¹å¼ ä¾¿äºå…¶å®ƒè¯­è¨€çš„è°ƒç”¨ï¼ˆLuaå¯¹æ³›å‹æ”¯æŒä¸å¥½ï¼‰
+        #region åŒæ­¥åŠ è½½çš„ä¸‰ä¸ªé‡è½½
 
         /// <summary>
-        /// Í¬²½¼ÓÔØ×ÊÔ´---·ºĞÍ¼ÓÔØ ¼òµ¥Ö±¹Û ÎŞĞèÏÔÊ¾×ª»»
+        /// åŒæ­¥åŠ è½½èµ„æº---æ³›å‹åŠ è½½ ç®€å•ç›´è§‚ æ— éœ€æ˜¾ç¤ºè½¬æ¢
         /// </summary>
-        /// <param name="abName">ab°üµÄÃû³Æ</param>
-        /// <param name="resName">×ÊÔ´Ãû³Æ</param>
+        /// <param name="abName">abåŒ…çš„åç§°</param>
+        /// <param name="resName">èµ„æºåç§°</param>
         public T LoadResource<T>(string abName, string resName) where T : UnityEngine.Object
     {
-            //¼ÓÔØÄ¿±ê°ü
+            //åŠ è½½ç›®æ ‡åŒ…
             AssetBundle ab = LoadABPackage(abName);
 
-            //·µ»Ø×ÊÔ´
+            //è¿”å›èµ„æº
             return ab.LoadAsset<T>(resName);
         }
 
 
-        //²»Ö¸¶¨ÀàĞÍ ÓĞÖØÃûÇé¿öÏÂ²»½¨ÒéÊ¹ÓÃ Ê¹ÓÃÊ±ĞèÏÔÊ¾×ª»»ÀàĞÍ
+        //ä¸æŒ‡å®šç±»å‹ æœ‰é‡åæƒ…å†µä¸‹ä¸å»ºè®®ä½¿ç”¨ ä½¿ç”¨æ—¶éœ€æ˜¾ç¤ºè½¬æ¢ç±»å‹
         public UnityEngine.Object LoadResource(string abName, string resName)
         {
-            //¼ÓÔØÄ¿±ê°ü
+            //åŠ è½½ç›®æ ‡åŒ…
             AssetBundle ab = LoadABPackage(abName);
 
-            //·µ»Ø×ÊÔ´
+            //è¿”å›èµ„æº
             return ab.LoadAsset(resName);
         }
 
 
-        //ÀûÓÃ²ÎÊı´«µİÀàĞÍ£¬ÊÊºÏ¶Ô·ºĞÍ²»Ö§³ÖµÄÓïÑÔµ÷ÓÃ£¬Ê¹ÓÃÊ±ĞèÇ¿×ªÀàĞÍ
+        //åˆ©ç”¨å‚æ•°ä¼ é€’ç±»å‹ï¼Œé€‚åˆå¯¹æ³›å‹ä¸æ”¯æŒçš„è¯­è¨€è°ƒç”¨ï¼Œä½¿ç”¨æ—¶éœ€å¼ºè½¬ç±»å‹
         public Object LoadResource(string abName, string resName, System.Type type)
         {
-            //¼ÓÔØÄ¿±ê°ü
+            //åŠ è½½ç›®æ ‡åŒ…
             AssetBundle ab = LoadABPackage(abName);
 
-            //·µ»Ø×ÊÔ´
+            //è¿”å›èµ„æº
             return ab.LoadAsset(resName, type);
         }
 
         #endregion
 
 
-        //================ÈıÖÖ×ÊÔ´Òì²½¼ÓÔØ·½Ê½======================
+        //================ä¸‰ç§èµ„æºå¼‚æ­¥åŠ è½½æ–¹å¼======================
 
         /// <summary>
-        /// Ìá¹©Òì²½¼ÓÔØ----×¢Òâ ÕâÀï¼ÓÔØAB°üÊÇÍ¬²½¼ÓÔØ£¬Ö»ÊÇ¼ÓÔØ×ÊÔ´ÊÇÒì²½
+        /// æä¾›å¼‚æ­¥åŠ è½½----æ³¨æ„ è¿™é‡ŒåŠ è½½ABåŒ…æ˜¯åŒæ­¥åŠ è½½ï¼Œåªæ˜¯åŠ è½½èµ„æºæ˜¯å¼‚æ­¥
         /// </summary>
-        /// <param name="abName">ab°üÃû³Æ</param>
-        /// <param name="resName">×ÊÔ´Ãû³Æ</param>
+        /// <param name="abName">abåŒ…åç§°</param>
+        /// <param name="resName">èµ„æºåç§°</param>
         public void LoadResourceAsync(string abName, string resName, System.Action<Object> finishLoadObjectHandler)
         {
             AssetBundle ab = LoadABPackage(abName);
-            //¿ªÆôĞ­³Ì Ìá¹©×ÊÔ´¼ÓÔØ³É¹¦ºóµÄÎ¯ÍĞ
+            //å¼€å¯åç¨‹ æä¾›èµ„æºåŠ è½½æˆåŠŸåçš„å§”æ‰˜
             StartCoroutine(LoadRes(ab, resName, finishLoadObjectHandler));
         }
 
@@ -158,15 +158,15 @@ public class AssetBundlesManager : UnitySingleton<AssetBundlesManager>
         private IEnumerator LoadRes(AssetBundle ab, string resName, System.Action<Object> finishLoadObjectHandler)
         {
             if (ab == null) yield break;
-            //Òì²½¼ÓÔØ×ÊÔ´API
+            //å¼‚æ­¥åŠ è½½èµ„æºAPI
             AssetBundleRequest abr = ab.LoadAssetAsync(resName);
             yield return abr;
-            //Î¯ÍĞµ÷ÓÃ´¦ÀíÂß¼­
+            //å§”æ‰˜è°ƒç”¨å¤„ç†é€»è¾‘
             finishLoadObjectHandler(abr.asset);
         }
 
 
-        //¸ù¾İTypeÒì²½¼ÓÔØ×ÊÔ´
+        //æ ¹æ®Typeå¼‚æ­¥åŠ è½½èµ„æº
         public void LoadResourceAsync(string abName, string resName, System.Type type, System.Action<Object> finishLoadObjectHandler)
         {
             AssetBundle ab = LoadABPackage(abName);
@@ -179,12 +179,12 @@ public class AssetBundlesManager : UnitySingleton<AssetBundlesManager>
             if (ab == null) yield break;
             AssetBundleRequest abr = ab.LoadAssetAsync(resName, type);
             yield return abr;
-            //Î¯ÍĞµ÷ÓÃ´¦ÀíÂß¼­
+            //å§”æ‰˜è°ƒç”¨å¤„ç†é€»è¾‘
             finishLoadObjectHandler(abr.asset);
         }
 
 
-        //·ºĞÍ¼ÓÔØ
+        //æ³›å‹åŠ è½½
         public void LoadResourceAsync<T>(string abName, string resName, System.Action<Object> finishLoadObjectHandler) where T : Object
         {
             AssetBundle ab = LoadABPackage(abName);
@@ -196,28 +196,28 @@ public class AssetBundlesManager : UnitySingleton<AssetBundlesManager>
             if (ab == null) yield break;
             AssetBundleRequest abr = ab.LoadAssetAsync<T>(resName);
             yield return abr;
-            //Î¯ÍĞµ÷ÓÃ´¦ÀíÂß¼­
+            //å§”æ‰˜è°ƒç”¨å¤„ç†é€»è¾‘
             finishLoadObjectHandler(abr.asset as T);
         }
 
 
-        //====================AB°üµÄÁ½ÖÖĞ¶ÔØ·½Ê½=================
-        //µ¥¸ö°üĞ¶ÔØ
+        //====================ABåŒ…çš„ä¸¤ç§å¸è½½æ–¹å¼=================
+        //å•ä¸ªåŒ…å¸è½½
         public void UnLoad(string abName)
         {
             if (abCache.ContainsKey(abName))
             {
                 abCache[abName].Unload(false);
-                //×¢Òâ»º´æĞèÒ»²¢ÒÆ³ı
+                //æ³¨æ„ç¼“å­˜éœ€ä¸€å¹¶ç§»é™¤
                 abCache.Remove(abName);
             }
         }
 
-        //ËùÓĞ°üĞ¶ÔØ
+        //æ‰€æœ‰åŒ…å¸è½½
         public void UnLoadAll()
         {
             AssetBundle.UnloadAllAssetBundles(false);
-            //×¢ÒâÇå¿Õ»º´æ
+            //æ³¨æ„æ¸…ç©ºç¼“å­˜
             abCache.Clear();
             mainAB = null;
             mainManifest = null;

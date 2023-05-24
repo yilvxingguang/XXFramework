@@ -1,6 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+
+public enum PanelHierarchy
+{
+    Nomal,
+    POP,
+}
+
 /// <summary>
 /// 面板基类
 /// </summary>
@@ -18,13 +25,15 @@ public class IPanel
         get { return canvas ?? (canvas = GameObject.Find("CanvasUI").transform);}
     }
 
+    public PanelHierarchy PanelHierarchy;
+
     protected GameObject uiObject;
     /// <summary>
     /// UIPanel
     /// </summary>
     public GameObject UIObject
     {
-        get { return uiObject ?? (uiObject = CreateUI()); }
+        get { return uiObject ?? (uiObject = CreateUI(PanelHierarchy)); }
     }
 
     /// <summary>
@@ -42,7 +51,7 @@ public class IPanel
     /// </summary>
     /// <param name="name">UIPanel名字</param>
     /// <param name="parentUIName">UIpanel父物体名字</param>
-    public IPanel(string name,string parentUIName)
+    public IPanel(string name,string parentUIName,PanelHierarchy panelHierarchy=PanelHierarchy.Nomal)
     {
         if (parentUIName == null)
         {
@@ -53,13 +62,15 @@ public class IPanel
             ParentUI = Canvas.Find(parentUIName);
         }
         UIName = name;
-        CreateUI();//实例化UI
+        PanelHierarchy = panelHierarchy;
+        CreateUI(panelHierarchy);//实例化UI
+        
     }
     /// <summary>
     /// 创建UI物体
     /// </summary>
     /// <returns></returns>
-    private GameObject CreateUI()
+    private GameObject CreateUI(PanelHierarchy panelHierarchy=PanelHierarchy.Nomal)
     {
         try
         {
@@ -67,7 +78,8 @@ public class IPanel
         }
         catch (Exception)
         {
-            uiObject = GameObject.Instantiate(AssetManager.Instance.ResourceAsset.LoadPanelObject(UIName), Canvas);
+            uiObject = GameObject.Instantiate(AssetManager.Instance.ResourceAsset.LoadPanelObject(UIName), 
+                GetPanelTransForm(panelHierarchy));
             uiObject.name = UIName;
         }
         return uiObject;
@@ -97,6 +109,21 @@ public class IPanel
     protected virtual void UIAssignment()
     {
 
+    }
+
+    public virtual Transform GetPanelTransForm(PanelHierarchy panelHierarchy)
+    {
+        Transform result = null;
+        switch (panelHierarchy)
+        {
+            case PanelHierarchy.Nomal:
+                result= canvas.Find("Normal");
+                break;
+            case PanelHierarchy.POP:
+                result= canvas.Find("POP");
+                break;
+        }
+        return result;
     }
 }
 
